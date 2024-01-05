@@ -24,5 +24,5 @@ if __name__ == "__main__":
         data_string = json.dumps(data,indent=2)
 
         mod.upload_data(data_string,"meteobucketfirst",country_code,city)
-
+        print(data_string)
         time.sleep(1.5)
