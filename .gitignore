@@ -1,4 +1,4 @@
 #keys
 /keys
 
-/keys/secrets.tfvars
+/terraform/secrets.tfvars
