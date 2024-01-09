@@ -57,3 +57,56 @@ def upload_data(data, bucket, country,city):
         logging.error(e)
         return False
     return True
+
+def json_columns(dict):
+
+    columns = []
+    values = []
+
+    for element in dict.keys():
+        print(element)
+        
+        if (len(dict[element])) > 1:
+
+            long = len(dict[element])
+
+            for i in range(long):
+                print(dict[element])
+                col = list(dict[element].keys())[i]
+                columns.append(col)
+
+        else:
+
+            columns.append(element)
+            values.append(dict[element])
+
+    print(columns)
+    print(values)
+
+
+
+def bardfunc (data):
+
+    columns = []
+    values = []
+
+    for key, value in data.items():
+
+        if isinstance(value, dict):
+            for subkey, subvalue in value.items():
+
+                columns.append(str(key + "/" + subkey))
+                values.append(subvalue)
+
+        elif key=="weather":
+
+            for weatherkey, weathervalue in data["weather"][0].items():
+
+                columns.append(str("weather/" + weatherkey))
+                values.append(weathervalue)
+
+        else:
+            columns.append(key)
+            values.append(value)
+
+    return {"columns" :columns, "values": values}
