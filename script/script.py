@@ -33,7 +33,11 @@ move_up_one_level()
 
 print(mod.current())
 
-final_list = mod.intersection(mod.read_first_column_csv("/home/kiwichi/WEATHERAPI/DATA/municipis_catalans.csv"),mod.get_cities("ES"))
+move_down_one_level("DATA")
+
+final_list = mod.intersection(mod.read_first_column_csv(mod.current() + "/municipis_catalans.csv"),mod.get_cities("ES"))
+
+move_up_one_level()
 
 with open(mod.current() + "/keys/api.txt","r") as f:
     WEATHER_API_KEY = f.readline()
