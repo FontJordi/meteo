@@ -4,9 +4,12 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
-  }
 
-  required_version = ">= 1.2.0"
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+  }
+ }
 }
 
 provider "aws" {
@@ -47,3 +50,35 @@ resource "aws_db_instance" "terraformdb" {
   publicly_accessible  = true 
 }
 
+resource "tls_private_key" "pk" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "devkey" {
+  key_name   = "aws_key_ec2"
+  public_key =  tls_private_key.pk.public_key_openssh
+
+  provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
+    command = "echo '${tls_private_key.pk.private_key_pem}' > ./myKey.pem"
+  }
+}
+
+data "aws_ami" "amzn-linux-2023-ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.*-x86_64"]
+  }
+}
+
+resource "aws_instance" "first_instance" {
+  ami           = data.aws_ami.amzn-linux-2023-ami.id
+  instance_type = "t2.micro"
+  key_name      = "aws_key_ec2"
+
+
+  depends_on = [ aws_key_pair.devkey ]
+}

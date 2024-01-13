@@ -27,3 +27,9 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "pub_key"{
+  description   = "public key ec2"
+  type          = string
+  sensitive     = true
+}
