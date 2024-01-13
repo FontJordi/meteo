@@ -20,7 +20,7 @@ print(current())
 
 def get_cities(country):
 
-    with open( current() + "/DATA/city.list.json", "r") as f:
+    with open( current() + "/city.list.json", "r") as f:
         data = json.load(f)
     cities = []
 
