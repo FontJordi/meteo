@@ -1,48 +1,25 @@
 import requests
-import sys
-import datetime
+from datetime import datetime
 import json
 import pandas as pd
 import time 
-import os
+import packages.mod as mod
 
-print(str(datetime.datetime.now()))
-
-def set_file_wd():
-    os.chdir(os.path.dirname(os.path.abspath(os.path.abspath(__file__))))
-    #return os.getcwd()
-
-def move_up_one_level():
-    
-    os.chdir(os.pardir)
-    #return os.getcwd()
-
-def move_down_one_level(dir):
-    os.chdir(os.getcwd() + "/" + dir)
-
-set_file_wd()
-move_up_one_level()
-move_down_one_level("packages")
-
-sys.path.insert(0, os.getcwd())
-
-import mod
-
-set_file_wd()
-move_up_one_level()
-
-print(mod.current())
-
-move_down_one_level("DATA")
-
-final_list = mod.intersection(mod.read_first_column_csv(mod.current() + "/municipis_catalans.csv"),mod.get_cities("ES"))
-
-move_up_one_level()
-
-with open(mod.current() + "/keys/api.txt","r") as f:
-    WEATHER_API_KEY = f.readline()
 
 if __name__ == "__main__":
+
+
+    filenames = mod.find_csv_filenames(mod.current() + "/DATA")
+    city_list = []
+
+    for name in filenames:
+
+        city_list.append(mod.intersection(mod.read_first_column_csv(mod.current() + "/DATA/" + name), mod.get_cities("ES")))
+
+    city_list = mod.flatten(city_list)
+
+    with open(mod.current() + "/keys/api.txt","r") as f:
+        WEATHER_API_KEY = f.readline()
 
     country_code = "ES"
     columns = ['coord/lon', 'coord/lat', 'weather/id', 'weather/main',
@@ -57,7 +34,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(columns=columns)
     
-    for city in final_list:
+    for city in city_list:
 
         url = "https://api.openweathermap.org/data/2.5/weather?q={city_name},{country_code}&appid={API_KEY}".format(city_name = city, country_code = "ES", API_KEY = WEATHER_API_KEY)
         res = requests.get(url)
@@ -67,9 +44,8 @@ if __name__ == "__main__":
         df2 = pd.DataFrame(data = [mod.bardfunc(data)["values"]], columns = mod.bardfunc(data)["columns"])
         df = pd.concat([df,df2]).reset_index(drop=True)
 
-        #mod.upload_data(data_string,"meteobucketfirst",country_code,city)
+        mod.upload_data(data_string,"meteobucketfirst", country_code, timestamp=datetime.now(), city=city)
 
         time.sleep(4)
 
-    #mod.upload_data(df.to_csv(None, header=False),"meteobucketfirst",country = "ES" ,city =  )
-    mod.upload_data(df.to_csv(None, header=False),"meteobucketfirst",country = "ES" ,timestamp = "all" )
+    mod.upload_data(df.to_csv(None, header=False),"meteobucketfirst",country = "ES" ,timestamp = datetime.now(), city='aall' )
