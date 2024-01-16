@@ -53,6 +53,8 @@ if __name__ == "__main__":
        'sys/id', 'sys/country', 'sys/sunrise', 'sys/sunset', 'timezone', 'id',
        'name', 'cod']
     
+    #ADD COLUMN message(?)
+
     df = pd.DataFrame(columns=columns)
     
     for city in final_list:
@@ -65,9 +67,9 @@ if __name__ == "__main__":
         df2 = pd.DataFrame(data = [mod.bardfunc(data)["values"]], columns = mod.bardfunc(data)["columns"])
         df = pd.concat([df,df2]).reset_index(drop=True)
 
-        mod.upload_data(data_string,"meteobucketfirst",country_code,city)
+        #mod.upload_data(data_string,"meteobucketfirst",country_code,city)
 
         time.sleep(4)
 
-    mod.upload_data(df.to_csv(None),"meteobucketfirst",country = "historical" ,city = str(datetime.datetime.now()) )
-    mod.upload_data(df.to_csv(None),"meteobucketfirst",country = "CAT" ,city = "all" )
+    #mod.upload_data(df.to_csv(None, header=False),"meteobucketfirst",country = "ES" ,city =  )
+    mod.upload_data(df.to_csv(None, header=False),"meteobucketfirst",country = "ES" ,timestamp = "all" )

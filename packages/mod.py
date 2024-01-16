@@ -48,9 +48,9 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
 
-def upload_data(data, bucket, country,city):
+def upload_data(data, bucket,country, timestamp):
 
-    key = "{country}/{city}".format(country=country, city=city)
+    key = "historical/{country}/{timestamp}".format(timestamp=timestamp, country=country)
 
     # Upload the file
     s3_client = boto3.client('s3')
