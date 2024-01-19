@@ -29,9 +29,9 @@ This project will show current and historical from towns in Catalonia.
 
 ## Setup
 
- -Setup Airflow
- -Setup dbt envoirment
- -Launch terraform template
- -Setup Metabase
+ - Setup Airflow
+ - Setup dbt envoirment
+ - Launch terraform template
+ - Setup Metabase
 
 # WORK IN PROGRESS
