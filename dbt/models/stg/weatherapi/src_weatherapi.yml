@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: weatherapi
+    database: mydb  
+    schema: weatherapi
+    tables:
+      - name: meteo_insert

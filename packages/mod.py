@@ -4,7 +4,15 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 import os
+import sys
 
+def get_parent_directory(file_path):
+    return os.path.dirname(file_path)
+
+def main_dir(main_script_path):
+    parent_directory = get_parent_directory(main_script_path)
+
+    return parent_directory
 
 def flatten(xss):
     return [x for xs in xss for x in xs]
@@ -16,10 +24,9 @@ def find_csv_filenames( path_to_dir, suffix=".csv" ):
 def current():
     return os.getcwd()
 
+def get_cities(path, country):
 
-def get_cities(country):
-
-    with open( current() + "/DATA/city.list.json", "r") as f:
+    with open( path + "/DATA/city.list.json", "r") as f:
         data = json.load(f)
     cities = []
 
@@ -44,12 +51,12 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
 
-def upload_data(data, bucket, country, timestamp, city):
+def upload_data(data, bucket, country, timestamp):
 
-    if city == None:    
-        key = "historical/{country}/{timestamp}".format(timestamp=timestamp, country=country)
+    if timestamp == None:    
+        key = "historical/{country}/".format(country=country)
     else:
-        key = "historical/{country}/{city}/{timestamp}".format(timestamp=timestamp, country=country, city=city)
+        key = "historical/{country}/{timestamp}".format(timestamp=timestamp, country=country)
 
     # Upload the file   
     s3_client = boto3.client('s3')

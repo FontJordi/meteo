@@ -1,0 +1,29 @@
+version: 2
+
+
+models:
+  - name: convert_nulls
+    description: "model from source data with nulls and column names changed"
+    columns:
+      - name: name
+        description: "The compound primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: timedate
+        description: "The compound primary key for this table"
+        tests:
+          - unique
+          - not_null
+
+  - name: convert_types
+    description: "converts the datatypes from convert_nulls model"
+
+  - name: meteo_view
+    description: "view of the main fields from weatherapi source"
+
+  - name: twoweeks
+    description: "view from the two latests weeks"
+
+  - name: latest_view
+    description: "view of the latest week"
