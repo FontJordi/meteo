@@ -111,13 +111,6 @@ with DAG(
 
     latest_s3_object = get_latest_object("meteobucketfirst", "meteobucketfirst/historical/ES/all")
 
-    #log_latest_s3_object_task = PythonOperator(
-    #    task_id="log_latest_s3_object",
-    #    python_callable=log_latest_s3_object,
-    #    provide_context=True
-    #)
-
-
     delay_python_task = PythonOperator(
         task_id="delay_python_task",
         dag=dag,
@@ -127,7 +120,7 @@ with DAG(
     transfer_s3_to_sql = S3ToSqlOperator(
         task_id="transfer_s3_to_sql",
         s3_bucket="meteobucketfirst",
-        s3_key=get_latest_object("meteobucketfirst", "historical/ES"),  #"historical/ES/all",
+        s3_key=get_latest_object("meteobucketfirst", "historical/ES"),
         table="weatherapi.meteo_insert",
         #schema="weatherapi",
         column_list=['coord_lon', 'coord_lat', 'weather_id', 'weather_main',
