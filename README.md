@@ -5,7 +5,7 @@ This project will show current and historical from towns in Catalonia.
 
 ### Dataset
 
-[OpenWeatherMap](https://openweathermap.org/) is an API which collects meteorological data ffrom around the globe, and [GeneralitatdeCatalunya]https://analisi.transparenciacatalunya.cat/, a public data collection of the government of catalonia.
+[OpenWeatherMap](https://openweathermap.org/) is an API which collects meteorological data ffrom around the globe, and [Generalitat de Catalunya](https://analisi.transparenciacatalunya.cat/), a public data collection of the government of catalonia.
 
 ### Tools & Technologies
 
