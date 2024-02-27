@@ -17,10 +17,6 @@ def get_latest_object(bucket_name, prefix):
     
     # List objects in the S3 bucket and filter by the specified prefix
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-    
-    # If there are no objects in the specified folder, return None
-    if 'Contents' not in response:
-        return "aaaaa"
 
     # Get the object with the latest last modified timestamp
     latest_object = max(response['Contents'], key=lambda x: x['LastModified'])
@@ -109,7 +105,14 @@ with DAG(
           database="mydb"
     ) 
 
-    latest_s3_object = get_latest_object("meteobucketfirst", "meteobucketfirst/historical/ES/all")
+    latest_s3_object = get_latest_object("meteobucketfirst", "historical/meteo/ES")
+
+    #log_latest_s3_object_task = PythonOperator(
+    #    task_id="log_latest_s3_object",
+    #    python_callable=log_latest_s3_object,
+    #    provide_context=True
+    #)
+
 
     delay_python_task = PythonOperator(
         task_id="delay_python_task",
@@ -120,7 +123,7 @@ with DAG(
     transfer_s3_to_sql = S3ToSqlOperator(
         task_id="transfer_s3_to_sql",
         s3_bucket="meteobucketfirst",
-        s3_key=get_latest_object("meteobucketfirst", "historical/ES"),
+        s3_key=get_latest_object("meteobucketfirst", "historical/meteo/ES"),  #"historical/ES/all",
         table="weatherapi.meteo_insert",
         #schema="weatherapi",
         column_list=['coord_lon', 'coord_lat', 'weather_id', 'weather_main',

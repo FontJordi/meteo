@@ -1,7 +1,7 @@
 ## Description
 
 ### Objective
-This project will show current and historical from towns in Catalonia.
+This project will show current and historical data from towns in Catalonia. I approached the project more from a learning experience, rather than a practical one
 
 ### Dataset
 
@@ -14,7 +14,7 @@ This project will show current and historical from towns in Catalonia.
 - Orchestration - [**Airflow**](https://airflow.apache.org)
 - Transformation - [**dbt**](https://www.getdbt.com)
 - Data Lake - [**Amazon S3**](https://aws.amazon.com/es/s3/)
-- Data Warehouse - [**Amazon RDS (PostgreSQL)**](https://cloud.google.com/bigquery)
+- Data Warehouse - [**Amazon RDS (PostgreSQL)**](https://aws.amazon.com/free/database/)
 - Data Visualization - [**Metabase**](https://www.metabase.com/)
 - Language - [**Python**](https://www.python.org)
 
