@@ -1,0 +1,24 @@
+To start airflow, install it following the instructions in the official documentation:
+https://airflow.apache.org/docs/apache-airflow/stable/start.html
+
+Check the minimum requirements of apache airflow before trying to run it (aws ec2 free tier instance won't be able to run it)
+Once installed, simply run $airflow standalone
+
+This will set up a local airflow instance. Visit localhost:8080 in you browser and log in with the admin account details shown 
+in the terminal when running airflow standalone. You can also create your own Admin user:
+
+airflow users create \
+    --email EMAIL --firstname firstname \
+    --lastname lastname --password password \
+    --role Admin --username username
+
+Once created, check the airflow folder created, and store the dags there, for example
+/home/{your_user}/airflow/dags
+
+To configure connections, go on the Airflow UI (localhost:8080 by default) and on the top left click on Admin->Connections.
+There, create a new connection id. In my case, i needed to create 2 connections id, one for aws and another for postgresql.
+In the case of aws, you will need to store your AWS Access Key ID and AWS Secret Access Key. Note that this is sensitive information.
+In the case of postgresql, store the database, login, host(db endpoint) and port.
+
+Once the connections are set, your aws connection has permissions to access whatever you are reading/writing and 
+you can access postgresql from the machine airflow is running, you are all set.

@@ -1,0 +1,29 @@
+To run kafka:
+
+Download kafka and extract it:
+
+$ tar -xzf kafka_2.13-3.7.0.tgz (latest version)
+$ cd kafka_2.13-3.7.0
+
+I used zookeeper, start the zookeeper service:
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+
+In another terminal, start the kafka broker service:
+$ bin/kafka-server-start.sh config/server.properties
+
+I used 3 brokers just to learn how I could do it and use the advantages of kafka (partitioning, replication)
+To set up a new broker, copy the file server.properties, rename it (for example server-1.properties) and change
+
+    -the broker.id
+    -listeners
+    -log.dirs
+
+every broker must have a different broker.id, listener and log.dirs
+
+Create a topic to store events:
+$ bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+
+Here you can add --partitioning and --replication. Remember that the replication value cannot be higher than the number of brokers.
+localhost:9092 is the default local server and port. It has to be the listener of any of your brokers.
+
+Once the topic is created, you can activate the producer.py. Remember to change the server, port and topic in the producer.py accordingly.

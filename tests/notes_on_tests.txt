@@ -1,0 +1,3 @@
+There should be various test py files to make sure every python file works as intended. 
+It is best practice to test driven develop. The existing tests are just examples, feel free to add more significant and useful
+tests.

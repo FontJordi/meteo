@@ -1,0 +1,44 @@
+I used dbt-core.
+
+Create a new directory. I used a virtual envoirment. The following lines create and activate a python venv:
+
+python -m venv dbt-core-demo
+cd dbt-core-demo
+source bin/activate
+pip install dbt-core 
+
+(dbt-core-demo is an example name for a venv)
+
+You will also need to install the adapter you want to use. check https://docs.getdbt.com/docs/supported-data-platforms to see 
+the available data platforms. In my case it's
+
+pip install dbt-postgres
+
+to check correct installation:
+
+dbt --version
+
+You should see dbt core installed and the plugin of your choice (in my case postgres).
+
+Now run dbt init dbt_core_demo2 inside the python venv. You will be asked to select the database to use, with its configuration
+(host, user, pass, dbname, schema, threads)
+
+Now a new folder inside your dbt-core-demo directory has been created, you can copy and paste the macros, models, tests and
+dbt_project.yml files into their corresponding folder (you can do this after everything has been set up, too)
+
+
+To create a dbt project:
+
+dbt init dbt_core_demo <-(project name)
+
+Open another terminal and go to ~/.dbt
+Create a profiles.yml file, follow the instructions https://docs.getdbt.com/docs/core/connect-data-platform/profiles.yml
+
+Now go back to your terminal with the venv activated, on the directory with the dbt_project.yml file run
+dbt debug
+
+if everything is OK, it will print All checks passed!
+
+you can now 
+
+dbt run
