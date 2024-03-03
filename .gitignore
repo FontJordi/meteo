@@ -8,5 +8,5 @@
 /terraform/myKey.pem
 
 #pycache
-/packages/__pycache__
-/tests/__pycache
+/packages/__pycache__/
+/tests/__pycache__/
