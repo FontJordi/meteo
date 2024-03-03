@@ -56,7 +56,7 @@ resource "tls_private_key" "pk" {
 }
 
 resource "aws_key_pair" "devkey" {
-  key_name   = "aws_key_ec2"
+  key_name   = "myKey"
   public_key =  tls_private_key.pk.public_key_openssh
 
   provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
@@ -77,7 +77,7 @@ data "aws_ami" "amzn-linux-2023-ami" {
 resource "aws_instance" "first_instance" {
   ami           = data.aws_ami.amzn-linux-2023-ami.id
   instance_type = "t2.micro"
-  key_name      = "aws_key_ec2"
+  key_name      = "myKey"
 
 
   depends_on = [ aws_key_pair.devkey ]

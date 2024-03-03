@@ -10,7 +10,17 @@ aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
 aws_secret_access_key_id = os.getenv("AWS_SECRET_ACCESS_KEY")
 
 class KafkaSparkConsumer:
+    """
+    A class for consuming data from a Kafka topic using Apache Spark.
+    """    
     def __init__(self, kafka_bootstrap_servers, kafka_topic):
+        """
+        Constructor method initializing the KafkaSparkConsumer object.
+
+        Args:
+        - kafka_bootstrap_servers (str): Comma-separated list of Kafka broker addresses.
+        - kafka_topic (str): The Kafka topic from which data will be consumed.
+        """
         self.spark = SparkSession.builder \
             .appName("KafkaConsumer") \
             .config("spark.hadoop.fs.s3a.access.key", aws_access_key_id) \
@@ -31,16 +41,25 @@ class KafkaSparkConsumer:
             .add("fakeKey", IntegerType()) \
             .add("fakeValue", FloatType())
         
-#.add("key", IntegerType()) \
     @staticmethod
     def read_parquet_with_schema(spark, path, schema):
         """
-        Read Parquet files with a specified schema.
+        Static method for reading Parquet files with a specified schema.
+
+        Args:
+        - spark (SparkSession): The SparkSession object.
+        - path (str): The path to the Parquet file.
+        - schema (StructType): The schema to be applied to the Parquet data.
+        
+        Returns:
+        - DataFrame: DataFrame containing the Parquet data with the specified schema.
         """
         return spark.read.schema(schema).parquet(path)
     
     def start_consumer(self):
-        # Read data from Kafka topic into a DataFrame
+        """
+        Method to start the Kafka consumer.
+        """
         kafka_df = self.spark \
             .readStream \
             .format("kafka") \
@@ -61,9 +80,6 @@ class KafkaSparkConsumer:
             col("data.fakeValue").cast("float").alias("value")
         )
 
-        # Process the data (replace with your processing logic)
-
-
         # Get current date
         current_date = datetime.now().strftime("%Y-%m-%d")
         query = parsed_df.writeStream \
@@ -71,12 +87,10 @@ class KafkaSparkConsumer:
             .format("csv") \
             .option("path", f"s3a://meteobucketfirst/spark/data/{current_date}") \
             .option("checkpointLocation", f"s3a://meteobucketfirst/spark/metadata/{current_date}") \
-            .trigger(processingTime="1 minutes") \
+            .trigger(processingTime="5 minutes") \
             .start()
 
         query.awaitTermination()
-
-#postgresql can't insert parquet files directly
 
 if __name__ == "__main__":
     # Define Kafka parameters
@@ -89,11 +103,5 @@ if __name__ == "__main__":
     # Start the consumer
     consumer.start_consumer()
 
-
-
-
-#spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 consumer.py
-#spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 --jars /path/to/hadoop-aws.jar,/path/to/aws-java-sdk.jar consumer.py
-#spark-submit --packages org.apache.hadoop:hadoop-aws:3.2.0,com.amazonaws:aws-java-sdk-bundle:1.11.375 consumer.py
-#spark-submit --packages org.apache.hadoop:hadoop-aws:3.2.0,com.amazonaws:aws-java-sdk-bundle:1.11.375,org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 consumer.py
+#To run this script, use the following command:
 #spark-submit --packages org.apache.hadoop:hadoop-aws:3.2.2,com.amazonaws:aws-java-sdk-bundle:1.11.375,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 consumer.py

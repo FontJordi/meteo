@@ -1,0 +1,5 @@
+This folder contains 2 files: 
+
+city.list.json: A JSON file containing the geographic coordinates of locations where data is available through the OpenWeatherMap API. It is accessible for download on their official website.
+
+municipis_catalans.csv: A csv file containing the list of cities we will extract data from OpenWeatherMap API. In my case, catalan towns and cities. 

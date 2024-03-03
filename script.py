@@ -6,6 +6,18 @@ from datetime import datetime
 from packages import mod
 
 def fetch_weather_data(city_list, country_code, api_key):
+    """
+    Function to fetch weather data for a list of cities from the OpenWeatherMap API.
+
+    Args:
+    - city_list (list): List of cities for which weather data will be fetched.
+    - country_code (str): Country code for the cities (e.g., "ES" for Spain).
+    - api_key (str): API key for accessing the OpenWeatherMap API.
+
+    Returns:
+    - DataFrame: DataFrame containing the fetched weather data.
+    - list: List of JSON objects representing the fetched weather data for each city.
+    """
     columns = ['coord/lon', 'coord/lat', 'weather/id', 'weather/main',
                'weather/description', 'weather/icon', 'base', 'main/temp',
                'main/feels_like', 'main/temp_min', 'main/temp_max', 'main/pressure',
@@ -33,6 +45,9 @@ def fetch_weather_data(city_list, country_code, api_key):
     return df, json_list
 
 def main():
+    """
+    Main function to fetch weather data, process it, and upload it to a cloud storage service.
+    """
     api_key_path = mod.main_dir(__file__) + "/keys/api.txt"
     with open(api_key_path, "r") as f:
         weather_api_key = f.readline()

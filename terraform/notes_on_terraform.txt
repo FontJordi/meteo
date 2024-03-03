@@ -1,18 +1,27 @@
 To set up terraform, follow the instructions of the official page: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
-Once terraform is installed, open a new directory and copy the files of the terraform folder there.
+Once terraform is installed, open a new directory and copy the files of the terraform folder.
 Create a secret.tfvars file with the following contents:
 
 db_username = "(your_db_username)"
 db_password = "(your_db_password)"
-pub_key     = "ssh-rsa (key)"
 
-This is used to store sensitive information in a safe manner. Do not share these contents. pub_key is the key generated for 
-your ec2 instance to access it via ssh
+This is used to store sensitive information in a safe manner. Do not share these contents.
 
-to set up the infrastructure set on main.tf open a terminal and run:
+To set up the infrastructure on aws set on main.tf open a terminal and run:
 
 terraform init
 terraform plan -var-file="secret.tfvars"
 terraform apply -var-file="secret.tfvars"
+
+To ssh into the ec2 instance, notice that we created on aws a key pair called "myKey" and replicated it on our folder. Run
+
+chmod 400 myKey.pem
+
+Before 
+
+ssh -i myKey.pem ec2-user@(Public IPv4 address of the ec2 instance)
+
+Remember to add an inbound rule on the security group of the ec2 instance to allow connections on port 22 from your IP.
+
 

@@ -1,3 +1,5 @@
+Initially I wanted to deploy this kafka cluster on an ec2 instance, however the free tier ec2 does not have 8gb ram (the minimum requirement to set up a kafka cluster), so i'll run it on my machine.
+
 To run kafka:
 
 Download kafka and extract it:
@@ -21,7 +23,7 @@ To set up a new broker, copy the file server.properties, rename it (for example 
 every broker must have a different broker.id, listener and log.dirs
 
 Create a topic to store events:
-$ bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+$ bin/kafka-topics.sh --create --topic my-topic-2 --bootstrap-server localhost:9092
 
 Here you can add --partitioning and --replication. Remember that the replication value cannot be higher than the number of brokers.
 localhost:9092 is the default local server and port. It has to be the listener of any of your brokers.

@@ -1,0 +1,9 @@
+Metabase is an open-source business intelligence (BI) tool easy to set up and run.
+
+Download it from https://www.metabase.com/start/oss/jar
+
+Then run java -jar metabase.jar. This will launch a Metabase server on port 3000.
+
+Connect to the UI on http://(ec2 instance ipv4):3000
+
+You are now ready to create any dashboard

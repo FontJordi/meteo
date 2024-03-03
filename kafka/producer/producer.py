@@ -5,10 +5,22 @@ import time
 import random
 
 class MadeUpAPI:
+    """
+    A class representing a made-up API for generating fake data.
+    """
     def __init__(self):
+        """
+        Constructor method initializing the MadeUpAPI object.
+        """
         self.values = [random.random() for _ in range(10)]  # Correct usage of random.random()
     
     def data_generator(self):
+        """
+        Method for generating fake data.
+
+        Returns:
+        - list: A list of dictionaries containing fake data.
+        """
         self.keys = [random.randint(1,8) for _ in range(10)]
         self.timestamps = [time.time() for _ in range(10)]
         data = []
@@ -18,13 +30,26 @@ class MadeUpAPI:
         
 
 class MyProducer:
+    """
+    A class for producing data to a Kafka topic using KafkaProducer.
+    """
     def __init__(self, brokers, topic):
+        """
+        Constructor method initializing the MyProducer object.
+
+        Args:
+        - brokers (list): List of Kafka broker addresses.
+        - topic (str): The Kafka topic to which data will be produced.
+        """
         self.producer = KafkaProducer(bootstrap_servers=brokers,
                                       value_serializer=lambda x: x)
         self.topic = topic
         self.api = MadeUpAPI()
 
     def fetch_and_send_data(self):
+        """
+        Method for fetching and sending data to Kafka brokers.
+        """
         while True:
             # Fetch data from madeUp API
             data = self.api.data_generator()
@@ -39,12 +64,6 @@ class MyProducer:
             # Sleep for some time before fetching data again
             time.sleep(10)
 
-    def start(self):
-        # Start a new thread for continuously fetching and sending data
-        data_thread = threading.Thread(target=self.fetch_and_send_data)
-        data_thread.daemon = True
-        data_thread.start()
-
 if __name__ == "__main__":
     # Define Kafka brokers and topic
     brokers = ['localhost:9092', 'localhost:9093', 'localhost:9094']
@@ -55,10 +74,3 @@ if __name__ == "__main__":
 
     # Start the producer
     opensky_producer.fetch_and_send_data() 
-
-    # Keep the main thread alive
-    try:
-        while True:
-            continue
-    except KeyboardInterrupt:
-        pass
