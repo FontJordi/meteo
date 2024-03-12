@@ -42,3 +42,8 @@ I approached the project more from a learning experience, rather than a practica
 ## Final Result
 
 ![meteo-architecture](images/result.png)
+
+## Possible improvements
+
+-SSL certificate on EC2
+-Tests
