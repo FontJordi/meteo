@@ -34,7 +34,7 @@ I approached the project more from a learning experience, rather than a practica
 
 ## Setup
 
- - [Setup](https://github.com/FontJordi/meteo/blob/master/dags/notes_on_airflow.txt) Airflow
+ - [Setup](https://github.com/FontJordi/meteo/blob/master/airflow/notes_on_airflow.txt) Airflow
  - [Setup](https://github.com/FontJordi/meteo/blob/master/dbt/notes_on_dbt.txt) dbt envoirment 
  - [Setup](https://github.com/FontJordi/meteo/blob/master/kafka/notes_on_kafka.txt) Kafka
  - [Setup](https://github.com/FontJordi/meteo/blob/master/terraform/notes_on_terraform.txt) Terraform 
