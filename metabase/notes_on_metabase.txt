@@ -1,9 +1,15 @@
 Metabase is an open-source business intelligence (BI) tool easy to set up and run.
 
-Download it from https://www.metabase.com/start/oss/jar
+We will set it up on an ec2 instance, first connect to the ec2 instance using the ssh key created by terraform:
+
+ssh -i myKey.pem ec2-user@(ipv4 address of ec2)
+
+Download it from https://www.metabase.com/start/oss/jar on your ec2 instance
 
 Then run java -jar metabase.jar. This will launch a Metabase server on port 3000.
 
 Connect to the UI on http://(ec2 instance ipv4):3000
+
+Set up the databse connection, make sure the ec2 instance can access the databse (security groups, etc)
 
 You are now ready to create any dashboard
