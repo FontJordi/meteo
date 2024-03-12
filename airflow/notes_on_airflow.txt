@@ -1,6 +1,11 @@
 To set up airflow, first install docker and docker compose following https://docs.docker.com/compose/install/
 
-thenrun
+Also, create an .env file in the same directory of docker-compose with the following:
+
+AIRFLOW_UID=501
+AIRFLOW_GID=0
+
+then, run
 
 sudo docker build . --tag extending_airflow:latest
 

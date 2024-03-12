@@ -10,6 +10,7 @@ from airflow.operators.bash import BashOperator
 import time
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
+#ugly function, should use the same method as the transfer_untransfered_csv_to_postgres to transfer files
 def get_latest_object(bucket_name, prefix):
     """Retrieves the S3 object with the latest last modified timestamp."""
 
