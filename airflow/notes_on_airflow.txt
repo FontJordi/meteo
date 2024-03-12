@@ -1,4 +1,6 @@
-To set up airflow, first run
+To set up airflow, first install docker and docker compose following https://docs.docker.com/compose/install/
+
+thenrun
 
 sudo docker build . --tag extending_airflow:latest
 

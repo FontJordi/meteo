@@ -21,6 +21,7 @@ I approached the project more from a learning experience, rather than a practica
 - Data Warehouse - [**Amazon RDS (PostgreSQL)**](https://aws.amazon.com/free/database/)
 - Data Visualization - [**Metabase**](https://www.metabase.com/)
 - Language - [**Python**](https://www.python.org)
+- Containerization - [**Docker**](https://www.docker.com/)
 
 ### Architecture
 
