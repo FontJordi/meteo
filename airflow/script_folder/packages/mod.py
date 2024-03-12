@@ -3,6 +3,7 @@ import os
 import logging
 import boto3
 from botocore.exceptions import ClientError
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 def get_parent_directory(file_path):
     """
@@ -61,16 +62,17 @@ def intersection(lst1, lst2):
 
 def upload_data(data, key, bucket):
     """
-    Uploads data to an AWS S3 bucket with the specified key.
+    Uploads data to an AWS S3 bucket with the specified key using S3 Hook.
     Returns True if the upload is successful, False otherwise.
     """
-    s3_client = boto3.client('s3')
+    s3_hook = S3Hook(aws_conn_id="aws_connection")  # Create S3 Hook with connection ID
     try:
-        response = s3_client.put_object(Body=data, Bucket=bucket, Key=key)
-    except ClientError as e:
+        s3_hook.load_string(string_data=data, key=key, bucket_name=bucket)
+    except Exception as e:
         logging.error(e)
         return False
     return True
+
 
 def bardfunc(data):
     """

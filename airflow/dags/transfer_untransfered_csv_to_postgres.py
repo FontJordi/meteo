@@ -37,7 +37,7 @@ def create_kafka_table_if_not_exists(table_name, columns, **kwargs):
     ).execute(context=kwargs)
 
 def transfer_untransferred_files_to_s3(s3_bucket, s3_prefix, **kwargs):
-    s3_hook = S3Hook(aws_conn_id='aws_connection_jordi')
+    s3_hook = S3Hook(aws_conn_id='aws_connection')
     postgres_hook = PostgresHook(postgres_conn_id='postgres_rds_connection')
 
     # Get list of files from S3
@@ -59,7 +59,7 @@ def transfer_untransferred_files_to_s3(s3_bucket, s3_prefix, **kwargs):
             table='kafka.data',
             column_list=['fakeTimestamp', 'fakeKey', 'fakeValue'],
             sql_conn_id='postgres_rds_connection',
-            aws_conn_id='aws_connection_jordi',
+            aws_conn_id='aws_connection',
             parser=parse_csv_to_list,
             dag=dag,
         ).execute(context=kwargs)
@@ -118,7 +118,7 @@ create_kafka_data_table_task = PythonOperator(
 transfer_task = PythonOperator(
     task_id='transfer_untransferred_files',
     python_callable=transfer_untransferred_files_to_s3,
-    op_args=["meteobucketfirst", "spark/data/2024-02-27"],
+    op_args=["meteobucketfirst", "spark/data/2024-03-12"], #SHOULD CHANGE THIS 
     provide_context=True,
     dag=dag,
 )

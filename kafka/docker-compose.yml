@@ -1,0 +1,75 @@
+version: '3.5'
+
+services:
+  zookeeper:
+    image: zookeeper:3.8.3  # Replace with desired version
+    environment:
+      ZOOPEEPER_CLIENT_PORT: 2181
+    networks:
+      - kafka_network
+
+  kafka0:
+    build:
+      context: ./cluster/broker0
+    expose:
+      - 9092
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka_network
+    environment:
+      KAFKA_BROKER_ID: 0
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  kafka1:
+    build:
+      context: ./cluster/broker1
+    expose:
+      - 9092
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka_network
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  kafka2:
+    build:
+      context: ./cluster/broker2
+    expose:
+      - 9092
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka_network
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  kafka_consumer:
+    build:
+      context: ./consumer
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+    networks:
+      - kafka_network
+    environment:
+      - AWS_ACCESS_KEY_ID  # Reference the actual variable name
+      - AWS_SECRET_ACCESS_KEY  # Reference the actual variable name
+
+  kafka_producer:
+    build:
+      context: ./producer
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+    networks:
+      - kafka_network
+
+networks:
+  kafka_network:
+    driver: bridge

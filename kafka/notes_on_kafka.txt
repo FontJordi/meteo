@@ -1,3 +1,16 @@
+To run the dockerized kafka application, first create an .env file in the same directory as docker-compose.yml. In that file define your aws connection:
+
+AWS_ACCESS_KEY_ID=(your aws access key)
+AWS_SECRET_ACCESS_KEY=(your aws secret access key)
+
+then run
+
+docker compose up
+
+on the same directory as docker-compose.yml
+
+------------------------------ old notes to run it without docker
+
 Initially I wanted to deploy this kafka cluster on an ec2 instance, however the free tier ec2 does not have 8gb ram (the minimum requirement to set up a kafka cluster), so i'll run it on my machine.
 
 To run kafka:

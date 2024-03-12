@@ -60,6 +60,7 @@ class KafkaSparkConsumer:
         """
         Method to start the Kafka consumer.
         """
+        print("aaaa")
         kafka_df = self.spark \
             .readStream \
             .format("kafka") \
@@ -93,8 +94,9 @@ class KafkaSparkConsumer:
         query.awaitTermination()
 
 if __name__ == "__main__":
-    # Define Kafka parameters
-    kafka_bootstrap_servers = 'localhost:9092,localhost:9093,localhost:9094'
+
+    # Define Kafka parameters 
+    kafka_bootstrap_servers = 'kafka0:9092,kafka1:9093,kafka2:9094'
     kafka_topic = 'my-topic-2'
 
     # Create an instance of KafkaSparkConsumer

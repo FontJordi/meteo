@@ -1,6 +1,6 @@
 #api keys
 /keys
-
+/airflow/keys/script_folder
 #sensitive terraform values
 /terraform/secret.tfvars
 
@@ -9,3 +9,9 @@
 
 #pycache
 __pycache__/
+
+#env variables
+/kafka/.env
+/airflow/.env
+
+/old

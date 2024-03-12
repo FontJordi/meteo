@@ -1,3 +1,4 @@
+from kafka.admin import KafkaAdminClient, NewTopic
 from kafka import KafkaProducer
 import json
 import threading
@@ -41,10 +42,26 @@ class MyProducer:
         - brokers (list): List of Kafka broker addresses.
         - topic (str): The Kafka topic to which data will be produced.
         """
+
         self.producer = KafkaProducer(bootstrap_servers=brokers,
                                       value_serializer=lambda x: x)
         self.topic = topic
         self.api = MadeUpAPI()
+        
+        # Kafka admin client
+        self.admin_client = KafkaAdminClient(bootstrap_servers=brokers)
+
+        # Check if the topic exists, if not create it
+        if topic not in self.admin_client.list_topics():
+            self.create_topic(topic)
+
+    def create_topic(self, topic):
+        """
+        Method to create a Kafka topic if it doesn't exist.
+        """
+        new_topic = NewTopic(name=topic, num_partitions=3, replication_factor=3)
+        self.admin_client.create_topics([new_topic])
+        print(f"Topic '{topic}' created.")
 
     def fetch_and_send_data(self):
         """
@@ -66,11 +83,11 @@ class MyProducer:
 
 if __name__ == "__main__":
     # Define Kafka brokers and topic
-    brokers = ['localhost:9092', 'localhost:9093', 'localhost:9094']
+    brokers = ['kafka0:9092', 'kafka1:9092', 'kafka2:9092']
     topic = 'my-topic-2'
 
     # Create an instance of KafkaProducer
-    opensky_producer = MyProducer(brokers, topic)
+    producer = MyProducer(brokers, topic)
 
     # Start the producer
-    opensky_producer.fetch_and_send_data() 
+    producer.fetch_and_send_data() 

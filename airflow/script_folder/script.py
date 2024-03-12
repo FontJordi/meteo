@@ -55,9 +55,11 @@ def main():
     country_code = "ES"
     csv_filenames = mod.find_csv_filenames(mod.main_dir(__file__) + "/DATA")
     city_list = []
+
     for name in csv_filenames:
+
         city_list.append(mod.intersection(mod.read_first_column_csv(mod.main_dir(__file__) + "/DATA/" + name),
-                                          mod.get_cities(mod.main_dir(__file__), country_code)))
+                                            mod.get_cities(mod.main_dir(__file__), country_code)))
 
     city_list = mod.flatten(city_list)
 
@@ -65,6 +67,8 @@ def main():
 
     # Uncomment below to upload data
     # mod.upload_data(json_list, "meteobucketfirst", country_code, timestamp=datetime.now())
+
+    #I should have separated the upload function from the code and do it as a DAG task
     mod.upload_data(df.to_csv(None, header=False, index=False),
                     f"historical/meteo/{country_code}/{datetime.now()}",
                     "meteobucketfirst")

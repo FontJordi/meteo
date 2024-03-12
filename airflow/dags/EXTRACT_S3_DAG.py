@@ -8,22 +8,20 @@ from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 import boto3
 from airflow.operators.bash import BashOperator
 import time
-
-dbt_project_name = "dbt_project"
-dbt_executable_path = "/usr/local/bin/dbt"
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 def get_latest_object(bucket_name, prefix):
-    s3 = boto3.client('s3')
-    
-    # List objects in the S3 bucket and filter by the specified prefix
-    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+    """Retrieves the S3 object with the latest last modified timestamp."""
+
+    s3_hook = S3Hook(aws_conn_id="aws_connection")  # Replace with your connection ID
+    response = s3_hook.list_keys(bucket_name=bucket_name, prefix=prefix)
 
     # Get the object with the latest last modified timestamp
-    latest_object = max(response['Contents'], key=lambda x: x['LastModified'])
-    
+    latest_object = max(response)
+
     # Return the key (i.e., object path) of the latest object
-   
-    return latest_object['Key']
+    return latest_object
+
 
 
 def log_latest_s3_object(**kwargs):
@@ -50,7 +48,7 @@ with DAG(
 
     first_function = BashOperator(
         task_id="first_function",
-        bash_command='/bin/python3 /home/kiwichi/WEATHERAPI/script.py'
+        bash_command='python /opt/airflow/additional-data/script.py'
     )
 
     create_schema = PostgresOperator(
@@ -82,9 +80,6 @@ with DAG(
             visibility                VARCHAR,
             wind_speed                VARCHAR,
             wind_deg                  VARCHAR,
-            wind_gust                 VARCHAR,
-            clouds_all                VARCHAR,
-            dt                        VARCHAR,
             sys_type                  VARCHAR,
             sys_id                    VARCHAR,
             sys_country               VARCHAR,
@@ -135,14 +130,14 @@ with DAG(
         'name','cod','rain_1h','rain_3h', 'snow_1h','snow_3h','insertdatetime'],
         parser=parse_csv_to_list,
         sql_conn_id='postgres_rds_connection',
-        aws_conn_id='aws_connection_jordi',
+        aws_conn_id='aws_connection',
     )
 
-    run_dbt_model = BashOperator(
-    task_id='run_dbt_model',
-    bash_command='pushd /home/kiwichi/dbt-testing/dbt_core_demo; source /home/kiwichi/dbt-testing/dbt-env/bin/activate; dbt run; popd',
-    dag=dag
-   )
+    #run_dbt_model = BashOperator(
+    #task_id='run_dbt_model',
+    #bash_command='pushd /home/kiwichi/dbt-testing/dbt_core_demo; source /home/kiwichi/dbt-testing/dbt-env/bin/activate; dbt run; popd',
+    #dag=dag
+    #)
 
-    first_function >> create_schema  >> create_meteo_table >> delay_python_task >> transfer_s3_to_sql >> run_dbt_model
+    first_function >> create_schema  >> create_meteo_table >> delay_python_task >> transfer_s3_to_sql# >> run_dbt_model
         

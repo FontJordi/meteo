@@ -1,3 +1,18 @@
+To set up airflow, first run
+
+sudo docker build . --tag extending_airflow:latest
+
+then 
+
+sudo docker compose up.
+
+Once everything is set up, access the aiflow UI and add the connections
+
+aws_connection
+postgres_rds_connection
+
+---------------------------------------------- old notes before dockerization
+
 To start airflow, install it following the instructions in the official documentation:
 https://airflow.apache.org/docs/apache-airflow/stable/start.html
 
