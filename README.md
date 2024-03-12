@@ -7,8 +7,7 @@ I approached the project more from a learning experience, rather than a practica
 
 ### Dataset
 
-[OpenWeatherMap](https://openweathermap.org/) is an API which collects meteorological data ffrom around the globe, and [Generalitat de Catalunya](https://analisi.transparenciacatalunya.cat/), a public data collection of the government of catalonia.
-[Made up Data] Python script
+[OpenWeatherMap](https://openweathermap.org/) is an API which collects meteorological data from around the globe, and made up data.
 
 ### Tools & Technologies
 
